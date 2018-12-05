@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,14 +60,26 @@ public class CrawlText {
         Element element = document.selectFirst(docs[0]);
         Elements children = element.children();
         html.append("<p style=\"text-align: left;\">");
-        html.append("  《王国纪元》是一款策略类战争游戏，游戏中玩家将化身国王一边发展自己的领地一边不断的对敌人发起进攻，喜欢这类游戏的玩家一定不要错过哦。" +
-                "壮阔的领土和精致的建筑，以全3D化的形式呈现在一张大地图上，将游戏的宏观世界一览无遗。");
+        html.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +FieldFilter.getInstance().getFirst());
         html.append("</p>");
         if (children.hasText()) {
-            for (Element child : children) {
+            a:for (Element child : children) {
                 if (child.is("p")) {
+                    String pcontent = child.html();
+                    if (pcontent.contains("小编为大家带来的全部")) {
+                        break a;
+                    }
+                    if (pcontent.contains("交流推荐群")) {
+                        break a;
+                    }
+                    if (pcontent.contains("全民手游攻略")) {
+                        break a;
+                    }
+                    if (pcontent.contains("97973")) {
+                        pcontent = pcontent.replaceAll("97973", "");
+                    }
                     child.attr("style","text-align: left;");
-                    html.append(child.toString());
+                    html.append(pcontent);
                     continue;
                 }
                 if (child.is("div")) {
@@ -79,14 +92,17 @@ public class CrawlText {
             }
         }
         html.append("<p style=\"text-align: left;\">");
-        html.append("  想要了解该游戏的更多攻略,敬请关注酷乐米");
+        html.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上就是小编为大家带来的全部内容了.");
+        html.append("</p>");
+        html.append("<p style=\"text-align: left;\">");
+        html.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;想要了解该游戏的更多攻略,敬请关注酷乐米");
         html.append("</p>");
         html.append("<p style=\"text-align: left;\"><b>");
-        html.append("  关于酷乐米");
+        html.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于酷乐米");
         html.append("</b></p>");
         html.append("<p style=\"text-align: left;\">");
-        html.append("  酷乐米手游攻略致力于为广大玩家提供最新、最全、最详尽的手游攻略，在这里你可以查询到任何你想要了解的内容。" +
-                "问答社区服务为玩家们提供了相互交流并相互解惑的平台，让玩家们的疑问尽快得到解决。");
+        html.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;酷乐米手游攻略致力于为广大玩家提供最新、最全、最详尽的手游攻略，在这里你可以查询到任何你想要了解的内容。" +
+                "社区服务为玩家们提供了相互交流并相互解惑的平台，让玩家们的疑问尽快得到解决。");
         html.append("</p>");
         htmlBean.setHtml(html.toString());
         return htmlBean;

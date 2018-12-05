@@ -19,10 +19,28 @@ import static Frame.App.BASEFILE;
  * @classDesc: 功能描述:
  */
 public class FileSave {
+    public static void deleteTup() {
+        new Thread() {
+            @Override
+            public void run() {
+                File file = getFile("C:\\Users\\Administrator\\Desktop\\tup");
+                File[] files = file.listFiles();
+                if (files.length != 0) {
+                    for (File file1 : files) {
+                        file1.delete();
+                    }
+                }
+            }
+        }.start();
+
+
+    }
+
     public static void save(String path, final List<HtmlBean> htmlBeans) {
         new Thread() {
             //判断父文件是否存在
             File baseFile = getFile("D:\\爬取游戏攻略\\" + path);
+
             @Override
             public void run() {
                 if (htmlBeans != null && htmlBeans.size() > 0) {
@@ -70,14 +88,16 @@ public class FileSave {
         return file;
 
     }
+
     /**
      * 检查文件是否已在完成区 不在为ture
      */
     public static boolean checkFileEND(String fileName) {
-        File file =new File(getFile(BASEFILE + "\\已完成"),matcherPath(fileName)+".obj") ;
+        File file = new File(getFile(BASEFILE + "\\已完成"), matcherPath(fileName) + ".obj");
         return !file.exists();
 
     }
+
     /**
      * 将字符串复制到剪切板。
      */
@@ -98,6 +118,7 @@ public class FileSave {
 
     /**
      * 反序列化
+     *
      * @param file
      * @return
      */
@@ -105,7 +126,7 @@ public class FileSave {
         //反序列化?
         ObjectInputStream in = null;
         try {
-            in  = new ObjectInputStream(new FileInputStream(file));
+            in = new ObjectInputStream(new FileInputStream(file));
             return (HtmlBean) in.readObject();
 
         } catch (IOException | ClassNotFoundException e) {

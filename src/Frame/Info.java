@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static util.FileSave.deleteTup;
+
 /**
  * @author ReStartLin
  * @data 2018/12/4 15:20
@@ -44,6 +46,7 @@ public class Info extends JFrame {
     private void clear() {
         titleLab.setText("");
         textArea1.setText("");
+        result.setText("");
     }
 
     private void showView(HtmlBean htmlBean,int index) {
@@ -84,6 +87,7 @@ public class Info extends JFrame {
         确认发布Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                deleteTup();
                 selectList.remove(index);
                 HtmlBean frist = selectList.getFrist();
                 Info.this.showView(frist,0);
